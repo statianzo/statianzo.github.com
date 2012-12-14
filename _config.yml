@@ -1,2 +1,8 @@
-markdown: rdiscount
 pygments: true
+
+title: jxs.me
+author:
+  name: Jason Staten
+  github: statianzo
+
+permalink: pretty
