@@ -1,8 +1,16 @@
+exclude: [vendor]
+markdown: rdiscount
 pygments: true
+
+production_url: http://jxs.me
 
 title: jxs.me
 author:
   name: Jason Staten
   github: statianzo
+  twitter: statenjason
+  title: Lead Developer
+  company: Katalus
+  company_url: http://katalus.com
 
 permalink: pretty

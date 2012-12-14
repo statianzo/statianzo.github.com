@@ -1,0 +1,77 @@
+---
+layout: post
+title: Katas and TDD
+---
+
+Not long ago, I picked up Uncle Bob Martin's [The Clean Coder][0] and felt like
+I was called out at every angle on places I could improve.  Two areas I've
+severely lacked in are Test Driven Development (TDD) and katas.  I found that
+using Ruby's Hoe and Zentest have helped eliminate excuses for me to not
+practice.
+
+[0]:http://www.amazon.com/Clean-Coder-Conduct-Professional-Programmers/dp/0137081073
+
+Starting Pains
+---
+
+One of my biggest deterrents from starting [katas][1] is the boilerplate to get
+rolling. Being a scripting language, Ruby is helpful for trimming the fat and
+only working on the meat. However, there is still the friction of laying out
+code properly and setting up testing. It's a minor challenge, but enough to put
+off the effort and say, "I'll do it later."
+
+Breaking Ground
+---
+
+Enter [Hoe][2]. Hoe is a Ruby gem to help get you rolling quickly. I started
+out by calling `sow`, which will make a folder in *~/.hoe_template/default*, I
+copied that folder as as sibling to *kata*. I took the time to configure it to
+use Minitest instead of Test::Unit.  Now, starting a new kata is as simple as
+`sow -s kata mynewkata`, and I'm good to start working. I now have a predefined
+place for source and tests, and also am able to run my tests quickly using
+`rake test`. I understand that there is some time spent to initially configure
+Hoe, but just knowing that won't have to deal with that every time I kata is
+makes it worth it.
+
+Little Circles
+---
+
+[Zentest][3] has also been effective in helping me use TDD. It's easy to slip
+up and skip running the tests as often as I should. Running `autotest`
+increases the frequency of of executing tests, by running on every change of
+source or test files.  It reduces "code, save, run", to simply "code, save".
+This is great while performing the refactor step of TDD, because you don't have
+to switch away from your code unless something breaks.
+
+Test Deferred
+---
+
+Test Driven Development is not a new topic to me. From the moment I learned of
+it, its usefulness has been obvious. Oddly enough, I've always behaved as if I
+was the exception to the rule. I continued writing my code first, and testing
+sparsely, *even though I knew that TDD was effective*.
+
+Assessing myself now, I see that my biggest flaw was only learning theory of TDD
+and  not the application of it. I never spent the time to overcome the learning
+curve.  At work, I'd be starting a new project or feature and wouldn't use TDD
+because I thought I didn't have the time to use it. I now recognize two flaws
+in this train of thinking.
+
+First, honing and growing my skills should not be while working on production
+code. A baseball pitcher doesn't learn how to throw a curveball during a game.
+Rather, he learns it thoroughly during practice time, so that during a game he
+can use it effectively. As a parallel, I should be using frequent katas to
+broaden and polish my skill set.
+
+Second, when I think *I don't have time*. It's really claiming *I dont have
+time to learn this technique that would make me a more effective developer*.  I
+reflect back to learning Vim. The learning curve is enough to make many shy
+away, but the productivity that comes from it is enormous. It took me at least
+two months of constant use to be on par with before it. Now, I am frustrated
+when I can't use Vim keybindings. Had I excused myself from learning that in
+the same way I've put off TDD, I would be missing one of the most important
+tools in my belt.
+
+[1]: http://en.wikipedia.org/wiki/Kata_(programming
+[2]: http://seattlerb.rubyforge.org/hoe/
+[3]: http://rubygems.org/gems/ZenTest
