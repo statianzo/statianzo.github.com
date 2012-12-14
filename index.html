@@ -3,21 +3,9 @@ layout: default
 ---
 
 <div id="home">
-  <h1>Blog Posts</h1>
   <ul class="posts">
     {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+      <li><span>{{ post.date | date_to_string }}</span><a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
-  </ul>
-
-  <h1>Talks</h1>
-  <ul class="posts">
-    <li><span>23 Mar 2012</span> &raquo; <a href="http://chumps.jxs.me">Polling is for Chumps</a></li>
-  </ul>
-
-  <h1>Open Source Projects</h1>
-  <ul class="posts">
-    <li><a href="https://github.com/statianzo/Fleck/">Fleck:</a> A C# Websocket Implementation</li>
-    <li><a href="https://github.com/mythz/jquip/">jquip:</a> jQuery in Parts</li>
   </ul>
 </div>
