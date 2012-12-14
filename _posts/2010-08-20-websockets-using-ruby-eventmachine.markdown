@@ -8,8 +8,6 @@ much easier and the experience for end users more pleasant as well. Lets take a
 look one of the new features: WebSockets. We'll make the magic happen with
 Ruby's EventMachine gem.
 
-~
-
 Mash Some Keys!
 ---
 

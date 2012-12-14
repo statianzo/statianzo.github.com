@@ -6,7 +6,8 @@ title: Giving Haskell A Shot
 [haskellhome]: http://haskell.org
 As a typical C# developer, occasionally it's good to take a step out of the
 Microsoft box, and see what other fascinating things exist. Let's take a look at
-a programming language named [Haskell][haskellhome].~
+a programming language named [Haskell][haskellhome].
+
 
 Hello, Haskell
 ---

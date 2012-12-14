@@ -8,7 +8,7 @@ Recursion
 ---
 
 [Recursion][recursion] in its simplest form can be understood as a function that calls
-itself. ~
+itself.
 
     fact x = x * fact (x - 1)
 

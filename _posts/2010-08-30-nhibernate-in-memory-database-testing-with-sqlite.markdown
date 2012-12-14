@@ -11,8 +11,6 @@ faced with the task of figuring out what's wrong, when it's really nothing.
 
 We've got an ORM to abstract the database from our app. Why not put it to use?
 
-~
-
 SQLite
 ---
 

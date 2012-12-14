@@ -8,7 +8,7 @@ yield basics
 
 yield places values into an IEnumerable
 object. To further understand what yield does, here's an example with trace
-statements between each yield statement:~
+statements between each yield statement:
 
     //:SimpleYield.cs
     using System;

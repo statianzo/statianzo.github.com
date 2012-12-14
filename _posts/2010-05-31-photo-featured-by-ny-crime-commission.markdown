@@ -14,7 +14,6 @@ four.
 [pamphlet]: http://www.nycrimecommission.org/pdfs/GuideToJuvenileJusticeInNYC.pdf
 [photo]: http://c.jxs.me/underneath_small.jpg
 [photolink]: http://www.sxc.hu/photo/800967
-~
 
 [![Underneath][photo]][photolink]
 

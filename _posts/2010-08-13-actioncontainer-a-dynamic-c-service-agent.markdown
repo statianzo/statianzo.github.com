@@ -6,8 +6,7 @@ title: "ActionContainer: a Dynamic C# Service Agent"
 ActionContainer is an implementation of the Service Agent pattern in
 written in C#. It takes advantage of the C# 4.0 *dynamic* feature to eliminate
 cluttering your code with empty message classes and also manipulate calls at
-runtime. 
-~
+runtime.
 
 Usage
 ---
