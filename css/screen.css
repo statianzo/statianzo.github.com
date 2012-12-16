@@ -188,3 +188,32 @@ ul.posts a {
 #related h2 {
   margin-bottom: 1em;
 }
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 6em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .title {
+    font-size: 4em;
+  }
+
+  ul.posts span {
+    display: block;
+    width: inherit;
+    text-align: left;
+    font-size: 0.8em;
+  }
+
+  ul.posts {
+    padding: 0;
+  }
+
+  ul.posts li {
+    line-height: 1em;
+    margin-bottom: 1em;
+    text-align: left;
+  }
+}
