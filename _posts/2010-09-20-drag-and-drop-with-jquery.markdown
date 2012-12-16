@@ -19,19 +19,23 @@ To do that in Javascript terms there are two calls to make on the event object:
 to other handlers, and the latter stops the browser from performing the default
 behavior, opening the file.
 
-    function ignoreDrag(e) {
-      e.originalEvent.stopPropagation();
-      e.originalEvent.preventDefault();
-    }
+{% highlight javascript %}
+function ignoreDrag(e) {
+  e.originalEvent.stopPropagation();
+  e.originalEvent.preventDefault();
+}
+{% endhighlight %}
 
 In the case that you're using jQuery, calling the attribute `originalEvent` is necessary to
 access `stopPropegation()` and `preventDefault()`. You'll want to bind the
 `ignoreDrag` function the *dragenter* and *dragover* events of the target.
 
-    $('#target')
-    .bind('dragenter', ignoreDrag)
-    .bind('dragover', ignoreDrag);
-    .bind('drop', drop);
+{% highlight javascript %}
+$('#target')
+.bind('dragenter', ignoreDrag)
+.bind('dragover', ignoreDrag);
+.bind('drop', drop);
+{% endhighlight %}
 
 You can use these events to style your target as well, to give visual
 confirmation that a file is able to be dropped on that element.
@@ -46,16 +50,18 @@ dropped. For accessing data like text or urls, invoke `getData()` passing one of
 the types given in `types`. For file access use the `files` attribute to
 retreive an array of *File* objects.
 
-    function drop(e) {
-      ignoreDrag(e);
-      var dt = e.originalEvent.dataTransfer;
-      var files = dt.files;
+{% highlight javascript %}
+function drop(e) {
+  ignoreDrag(e);
+  var dt = e.originalEvent.dataTransfer;
+  var files = dt.files;
 
-      if(dt.files.length > 0){
-        var file = dt.files[0];
-        alert(file.name);
-      }
-    }
+  if(dt.files.length > 0){
+    var file = dt.files[0];
+    alert(file.name);
+  }
+}
+{% endhighlight %}
 
 <div id='alerter' style='background:#6666FF;'>Drop File Here</div>
 
@@ -65,19 +71,21 @@ useful for doing an upload of drag and dropped files. [Andrea Giammarchi][andrea
 wrote a small library called [sendfile][sendfile] for uploading an array of
 *File* objects. It could be used as follows:
 
-    function drop(e) {
-      ignoreDrag(e);
-      var dt = e.originalEvent.dataTransfer;
-      var droppedFiles = dt.files;
+{% highlight javascript %}
+function drop(e) {
+  ignoreDrag(e);
+  var dt = e.originalEvent.dataTransfer;
+  var droppedFiles = dt.files;
 
-      if(dt.files.length > 0){
-        sendMultipleFiles({
-          files: droppedFiles,
-          url: 'http://mywebsite.com/upload',
-          onload: function (){ alert('Done'); }
-        });
-      }
-    }
+  if(dt.files.length > 0){
+    sendMultipleFiles({
+      files: droppedFiles,
+      url: 'http://mywebsite.com/upload',
+      onload: function (){ alert('Done'); }
+    });
+  }
+}
+{% endhighlight %}
 
 Client Side File Reading in Firefox
 ---
@@ -90,15 +98,17 @@ string. Finally `getAsText` will return a string from the encoding provided.
 Using `getAsDataURL` will allow you to populate the *src* attribute of an *img*
 tag with a *data* string. 
 
-    function drop(e) {
-      ignoreDrag(e);
-      var dt = e.originalEvent.dataTransfer;
-      var files = dt.files;
+{% highlight javascript %}
+function drop(e) {
+  ignoreDrag(e);
+  var dt = e.originalEvent.dataTransfer;
+  var files = dt.files;
 
-      if(dt.files.length > 0){
-        $(this).attr('src', files[0].getAsDataURL());
-      }
-    }
+  if(dt.files.length > 0){
+    $(this).attr('src', files[0].getAsDataURL());
+  }
+}
+{% endhighlight %}
 
 If you're using Firefox (3.6+), drag an image over the image below. The image
 will be replaced by the image you drop. No need to send data round trip!

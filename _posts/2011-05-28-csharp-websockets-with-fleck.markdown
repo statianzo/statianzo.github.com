@@ -27,19 +27,21 @@ Get rolling with Fleck by creating a new `WebSocketServer` with the address to
 bind.  Call `Start()` to start the server and configure callbacks for `OnOpen`,
 `OnClose`, and `OnMessage`.
 
-    var allSockets = new List<IWebSocketConnection> ();
-    var server = new WebSocketServer ("ws://localhost:8081");
-    server.Start (socket =>
-    {
-      socket.OnOpen = () => allSockets.Add (socket);
-      socket.OnClose = () => allSockets.Remove (socket);
-      socket.OnMessage = message =>
-      {
-        foreach (var s in allSockets.ToList())
-          s.Send (message);
-      };
-    });
-    var input = Console.ReadLine ();
+{% highlight csharp %}
+var allSockets = new List<IWebSocketConnection> ();
+var server = new WebSocketServer ("ws://localhost:8081");
+server.Start (socket =>
+{
+  socket.OnOpen = () => allSockets.Add (socket);
+  socket.OnClose = () => allSockets.Remove (socket);
+  socket.OnMessage = message =>
+  {
+    foreach (var s in allSockets.ToList())
+      s.Send (message);
+  };
+});
+var input = Console.ReadLine ();
+{% endhighlight %}
 
 In the example, connected sockets are added to an array and broadcasted to when
 `OnMessage` is triggered.
@@ -51,44 +53,45 @@ The client side script listens for keypresses and sends them to the websocket.
 On receiving a message, which is just a single letter in this case, the
 corresponding letter will be lit up.
 
+{% highlight javascript %}
+var socket;
+var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    var socket;
-    var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function animateCharacter(letter)
+{
+  var upper = letter.toUpperCase();
+  $('#character_' + upper)
+    .stop(true,true)
+    .animate({ opacity: 1}, 100)
+    .animate({ opacity: .2}, 100);
+}
 
-    function animateCharacter(letter)
-    {
-      var upper = letter.toUpperCase();
-      $('#character_' + upper)
-        .stop(true,true)
-        .animate({ opacity: 1}, 100)
-        .animate({ opacity: .2}, 100);
-    }
+function setup()
+{
+  var target = $('#alphabet');
+  for(var i = 0; i <=alphabet.length; i++)
+  {
+    var char = alphabet.charAt(i);
+    target.append('<span id="character_' + char +'">' + char + '</span');
+  }
+  connect();
 
-    function setup()
-    {
-      var target = $('#alphabet');
-      for(var i = 0; i <=alphabet.length; i++)
-      {
-        var char = alphabet.charAt(i);
-        target.append('<span id="character_' + char +'">' + char + '</span');
-      }
-      connect();
+  $(document).keypress(function(e){
+    var char = String.fromCharCode(e.keyCode);
+    socket.send(char);
+  });
+};
 
-      $(document).keypress(function(e){
-        var char = String.fromCharCode(e.keyCode);
-        socket.send(char);
-      });
-    };
+function connect(){
+  socket = new WebSocket('ws://localhost:8081');
+  socket.onmessage = function(mess) {
+    animateCharacter(mess.data);
+  };
 
-    function connect(){
-      socket = new WebSocket('ws://localhost:8081');
-      socket.onmessage = function(mess) {
-        animateCharacter(mess.data);
-      };
+};
 
-    };
-
-    window.onload += setup();
+window.onload += setup();
+{% endhighlight %}
 
 With it all put together, WebSockets makes for a simple way to connect users
 together through the browser without plugins, polling, or other ugly frameworks.

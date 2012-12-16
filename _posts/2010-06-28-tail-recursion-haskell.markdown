@@ -10,7 +10,9 @@ Recursion
 [Recursion][recursion] in its simplest form can be understood as a function that calls
 itself.
 
-    fact x = x * fact (x - 1)
+{% highlight haskell %}
+fact x = x * fact (x - 1)
+{% endhighlight %}
 
 
 In the above function, `fact(x)` is equal to `x` times the value of `fact(x-1)`.
@@ -18,8 +20,10 @@ In the above function, `fact(x)` is equal to `x` times the value of `fact(x-1)`.
 it doesn't have a *base case*. A *base case* could be something like `fact 1 =
 1`, where the function no longer recurses and will be capable of terminating.
 
-    fact 0 = 1
-    fact x = x * fact (x - 1)
+{% highlight haskell %}
+fact 0 = 1
+fact x = x * fact (x - 1)
+{% endhighlight %}
 
 If `x` is larger than 0, `fact` will eventually terminate, and the factorial of
 that number will be returned.
@@ -30,10 +34,12 @@ Tail Recursion
 The term *tail recursion* refers to a form of recursion in which the final
 operation of a function is a call to the function itself.
 
-    fact2 x =
-      tailFact x 1
-      where tailFact 0 a = a
-            tailFact n a = tailFact (n - 1) (n * a)
+{% highlight haskell %}
+fact2 x =
+  tailFact x 1
+  where tailFact 0 a = a
+        tailFact n a = tailFact (n - 1) (n * a)
+{% endhighlight %}
 
 The `fact2` function wraps a call to `tailFact` a function that's tail
 recursive. The first argument `n` in `tailFact` tells the function we want the
@@ -48,8 +54,10 @@ added complexity. What good is it other than to confuse other readers of your
 code? The answer has to do with how most programming languages handle function
 calls. Take this small example:
 
-    foo x = 10 + x 
-    bar = 3 * foo 4
+{% highlight haskell %}
+foo x = 10 + x
+bar = 3 * foo 4
+{% endhighlight %}
 
 Say your program is in function `bar` and it reaches the call to `foo`. It then
 proceeds to execute the code at the memory address of the `foo` function. When
@@ -80,9 +88,11 @@ They are part of a sequence as follows: 1,2,3,5,8,13,21... Starting at 1, each
 term of the Fibonacci sequence is the sum of the two numbers preceding it. A
 simple recursive solution in Haskell is as follows:
 
-    fibs 0 = 1
-    fibs 1 = 1
-    fibs n = fibs (n - 1) + fibs (n - 2)
+{% highlight haskell %}
+fibs 0 = 1
+fibs 1 = 1
+fibs n = fibs (n - 1) + fibs (n - 2)
+{% endhighlight %}
 
 Notice that the `fibs` function needs to call itself twice to calculate the nth
 Fibonacci. The number of recursive calls grows exponentially where the first two
@@ -91,12 +101,14 @@ calls will each make two of their own, and so on.
 Using tail recursion, while slightly more complex, will prevent the exponential
 growth of function calls.
 
-    fibs2 = tailFibs 0 1 0 
+{% highlight haskell %}
+fibs2 = tailFibs 0 1 0 
 
-    tailFibs prev1 prev2 start end 
-              | start == end = next
-              | otherwise = tailFibs next prev1 (start + 1) end
-              where next = prev1 + prev2
+tailFibs prev1 prev2 start end 
+          | start == end = next
+          | otherwise = tailFibs next prev1 (start + 1) end
+          where next = prev1 + prev2
+{% endhighlight %}
 
 The workhorse in this solution is `tailFibs`, takes four arguments, three are
 accumulators of some sort. `prev1` and `prev2` are the previous first and second

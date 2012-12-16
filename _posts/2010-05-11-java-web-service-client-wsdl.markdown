@@ -15,49 +15,52 @@ Generating Classes from a WSDL
 This project is different than some because it starts
 with a build.xml. Within it is the necessary task to generate `*.java` files we
 will use later for communicating with the web service.
-    <?xml version="1.0"?>
-    <!--build.xml WebService Client Example by Jason Staten-->
-    <project basedir="." default="client" name="MathServiceExample">
-      <property environment="env"/>
-      <property name="lib.home" value="${env.JAXWS_HOME}/lib"/>
-      <property name="build.home" value="${basedir}/build"/>
-      <property name="build.classes.home" value="${build.home}/classes"/>
-      <path id="jaxws.classpath">
-        <pathelement location="${java.home}/../lib/tools.jar"/>
-        <fileset dir="${lib.home}">
-          <include name="*.jar"/>
-          <exclude name="j2ee.jar"/>
-        </fileset>
-      </path>
-      <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
-        <classpath refid="jaxws.classpath"/>
-      </taskdef>
-      <target name="setup">
-        <mkdir dir="${build.home}"/>
-        <mkdir dir="${build.classes.home}"/>
-      </target>
-      <target name="generate-client">
-        <wsimport debug="true"
-                  verbose="${verbose}"
-                  keep="true"
-                  sourcedestdir="${basedir}/src"
-                  package="com.jstaten.webService.client.generated"
-                  wsdl="http://localhost:7070/MathExample/MathService?wsdl"
-                  xnocompile="true">
-    </wsimport>
-      </target>
-      <target name="client" depends="generate-client,setup">
-        <javac  fork="true"
-                srcdir="${basedir}/src"
-                destdir="${build.classes.home}"
-                includes="**/client/**,**/common/**">
-          <classpath refid="jaxws.classpath"/>
-        </javac>
-      </target>
-      <target name="clean">
-        <delete dir="${build.home}" includeEmptyDirs="true"/>
-      </target>
-    </project>
+
+{% highlight xml %}
+<?xml version="1.0"?>
+<!--build.xml WebService Client Example by Jason Staten-->
+<project basedir="." default="client" name="MathServiceExample">
+  <property environment="env"/>
+  <property name="lib.home" value="${env.JAXWS_HOME}/lib"/>
+  <property name="build.home" value="${basedir}/build"/>
+  <property name="build.classes.home" value="${build.home}/classes"/>
+  <path id="jaxws.classpath">
+    <pathelement location="${java.home}/../lib/tools.jar"/>
+    <fileset dir="${lib.home}">
+      <include name="*.jar"/>
+      <exclude name="j2ee.jar"/>
+    </fileset>
+  </path>
+  <taskdef name="wsimport" classname="com.sun.tools.ws.ant.WsImport">
+    <classpath refid="jaxws.classpath"/>
+  </taskdef>
+  <target name="setup">
+    <mkdir dir="${build.home}"/>
+    <mkdir dir="${build.classes.home}"/>
+  </target>
+  <target name="generate-client">
+    <wsimport debug="true"
+              verbose="${verbose}"
+              keep="true"
+              sourcedestdir="${basedir}/src"
+              package="com.jstaten.webService.client.generated"
+              wsdl="http://localhost:7070/MathExample/MathService?wsdl"
+              xnocompile="true">
+</wsimport>
+  </target>
+  <target name="client" depends="generate-client,setup">
+    <javac  fork="true"
+            srcdir="${basedir}/src"
+            destdir="${build.classes.home}"
+            includes="**/client/**,**/common/**">
+      <classpath refid="jaxws.classpath"/>
+    </javac>
+  </target>
+  <target name="clean">
+    <delete dir="${build.home}" includeEmptyDirs="true"/>
+  </target>
+</project>
+{% endhighlight %}
 
 There are two key parts to this build file, the taskdef that declares what the *wsimport*
 tag actually is and the task *generate-client* that uses wsimport to
@@ -68,27 +71,26 @@ within your *src* directory, you will now notice that there are now
 Writing the Client
 ---
 
-    package com.jstaten.webService.client;
-    import com.jstaten.webService.client.generated.*;
-    public class MathClient {
-        public static void main(String[] args) {
-            MathExampleImpl port = new
-            MathExampleImplService().getMathExampleImplPort();
-            int addA = 10;
-            int addB = 20;
-            float multiplyA = 30;
-            float multiplyB = 20.59f;
-            
-            System.out.println(addA + " + " + addB + " =");
-            
-            System.out.println(port.addInts(addA, addB));
-            System.out.println(multiplyA +
-              " * " + multiplyB + " =");
-        }
+{% highlight java %}
+package com.jstaten.webService.client;
+import com.jstaten.webService.client.generated.*;
+public class MathClient {
+    public static void main(String[] args) {
+        MathExampleImpl port = new
+        MathExampleImplService().getMathExampleImplPort();
+        int addA = 10;
+        int addB = 20;
+        float multiplyA = 30;
+        float multiplyB = 20.59f;
+
+        System.out.println(addA + " + " + addB + " =");
+
+        System.out.println(port.addInts(addA, addB));
+        System.out.println(multiplyA + " * " + multiplyB + " =");
     }
-        
-        
- 
+}
+{% endhighlight %}
+
 The code is relatively straightforward. We make an import call to
 the generated classes. Next we create a new *MathExampleImpl* object
 that is our interface to the webservice. Finally, we run a few test methods
@@ -97,15 +99,17 @@ on it and return the result to the console so we can see the result.
 Build the Client
 ---
 
-    <?xml version="1.0"?>
-    <target name="client" depends="generate-client,setup">
-      <javac fork="true"
-             srcdir="${basedir}/src"
-             destdir="${build.classes.home}"
-             includes="**/client/**,**/common/**">
-        <classpath refid="jaxws.classpath"/>
-      </javac>
-    </target>
+{% highlight xml %}
+<?xml version="1.0"?>
+<target name="client" depends="generate-client,setup">
+  <javac fork="true"
+         srcdir="${basedir}/src"
+         destdir="${build.classes.home}"
+         includes="**/client/**,**/common/**">
+    <classpath refid="jaxws.classpath"/>
+  </javac>
+</target>
+{% endhighlight %}
 
 Adding the above into your build file within the *project* element will allow
 you to build the client. Essentially it's just a javac call with some

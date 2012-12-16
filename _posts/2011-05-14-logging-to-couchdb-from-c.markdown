@@ -30,31 +30,33 @@ Use log4net like normal
 If your project currently uses, you're in business.
 If not, take the following example:
 
-    using System;
-    using log4net.Config;
-    using log4net;
+{% highlight csharp %}
+using System;
+using log4net.Config;
+using log4net;
 
-    namespace CouchDBAppenderExample
+namespace CouchDBAppenderExample
+{
+  class MainClass
+  {
+    public static void Main (string[] args)
     {
-      class MainClass
-      {
-        public static void Main (string[] args)
-        {
-          XmlConfigurator.Configure();
-          ILog logger = LogManager.GetLogger(typeof(MainClass));
-          Console.WriteLine ("Press enter to do it");
-          Console.ReadLine();
-          try {
-            throw new InvalidOperationException("Don't do that!");
-          }
-          catch(InvalidOperationException e) {
-            logger.Error("It blew up", e);
-          }
-          Console.WriteLine("Done");
-          Console.ReadLine();
-        }
+      XmlConfigurator.Configure();
+      ILog logger = LogManager.GetLogger(typeof(MainClass));
+      Console.WriteLine ("Press enter to do it");
+      Console.ReadLine();
+      try {
+        throw new InvalidOperationException("Don't do that!");
       }
+      catch(InvalidOperationException e) {
+        logger.Error("It blew up", e);
+      }
+      Console.WriteLine("Done");
+      Console.ReadLine();
     }
+  }
+}
+{% endhighlight %}
 
 A typical log4net usage. An exception occurs and it gets logged.
 
@@ -72,44 +74,46 @@ Several options are available.
 
 A sample configuration is as follows:
 
-    <?xml version="1.0"?>
-    <configuration>
-      <configSections>
-        <section name="log4net"
-                 type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
-      </configSections>
+{% highlight xml %}
+<?xml version="1.0"?>
+<configuration>
+  <configSections>
+    <section name="log4net"
+             type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+  </configSections>
 
-      <log4net>
-        <appender name="HttpAppender" type="PostLog.HttpAppender, PostLog">
-          <uri value="http://localhost:5984/testlog" />
-          <formatterType value="PostLog.JsonBodyFormatter, PostLog" />
-          <parameter>
-            <name value="date" />
-            <layout type="log4net.Layout.RawTimeStampLayout" />
-          </parameter>
-          <parameter>
-            <name value="level" />
-            <layout type="log4net.Layout.PatternLayout">
-              <conversionPattern value="%level" />
-            </layout>
-          </parameter>
-          <parameter>
-            <name value="message" />
-            <layout type="log4net.Layout.PatternLayout">
-              <conversionPattern value="%message" />
-            </layout>
-          </parameter>
-          <parameter>
-            <name value="exception" />
-            <layout type="log4net.Layout.ExceptionLayout" />
-          </parameter>
-        </appender>
-        <root>
-          <level value="DEBUG" />
-          <appender-ref ref="HttpAppender" />
-        </root>
-      </log4net>
-    </configuration>
+  <log4net>
+    <appender name="HttpAppender" type="PostLog.HttpAppender, PostLog">
+      <uri value="http://localhost:5984/testlog" />
+      <formatterType value="PostLog.JsonBodyFormatter, PostLog" />
+      <parameter>
+        <name value="date" />
+        <layout type="log4net.Layout.RawTimeStampLayout" />
+      </parameter>
+      <parameter>
+        <name value="level" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%level" />
+        </layout>
+      </parameter>
+      <parameter>
+        <name value="message" />
+        <layout type="log4net.Layout.PatternLayout">
+          <conversionPattern value="%message" />
+        </layout>
+      </parameter>
+      <parameter>
+        <name value="exception" />
+        <layout type="log4net.Layout.ExceptionLayout" />
+      </parameter>
+    </appender>
+    <root>
+      <level value="DEBUG" />
+      <appender-ref ref="HttpAppender" />
+    </root>
+  </log4net>
+</configuration>
+{% endhighlight %}
 
 With the new appender in place, your log statements should start hitting CouchDB.
 

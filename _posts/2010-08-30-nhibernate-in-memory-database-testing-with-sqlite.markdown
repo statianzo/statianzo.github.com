@@ -40,48 +40,49 @@ from this class and will have the Session object available. Sessions last as
 long as each test fixture. Also, `typeof(Plan)` refers to the type of any of
 your domain classes.
 
-    public class InMemoryDatabaseTest
-    {
-      private static Configuration _configuration;
-      protected readonly ISession Session;
-      private readonly object _baton = new object();
+{% highlight csharp %}
+public class InMemoryDatabaseTest
+{
+  private static Configuration _configuration;
+  protected readonly ISession Session;
+  private readonly object _baton = new object();
 
-      private readonly ISessionFactory
-        _sessionFactory;
+  private readonly ISessionFactory
+    _sessionFactory;
 
-      public InMemoryDatabaseTest()
-      {
+  public InMemoryDatabaseTest()
+  {
+    if (_configuration == null)
+      lock (_baton)
         if (_configuration == null)
-          lock (_baton)
-            if (_configuration == null)
-            {
-              _configuration = new Configuration()
-                .SetProperty(Environment.ReleaseConnections, "on_close")
-                .SetProperty(Environment.ProxyFactoryFactoryClass,
-                             "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle")
-                .SetProperty(Environment.CacheProvider,
-                             "NHibernate.Caches.SysCache.SysCacheProvider, NHibernate.Caches.SysCache")
-                .SetProperty(Environment.ConnectionDriver, typeof (SQLite20Driver).AssemblyQualifiedName)
-                .SetProperty(Environment.ConnectionProvider,
-                             "NHibernate.Connection.DriverConnectionProvider")
-                .SetProperty(Environment.Isolation, "ReadCommitted")
-                .SetProperty(Environment.ConnectionString, "Data Source=:memory:;Version=3;New=True;")
-                .SetProperty(Environment.ShowSql, "True")
-                .SetProperty(Environment.Dialect, typeof (SQLiteDialect).AssemblyQualifiedName)
-                .AddAssembly(Assembly.GetAssembly(typeof(YourDomainObject)));
+        {
+          _configuration = new Configuration()
+            .SetProperty(Environment.ReleaseConnections, "on_close")
+            .SetProperty(Environment.ProxyFactoryFactoryClass,
+                         "NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle")
+            .SetProperty(Environment.CacheProvider,
+                         "NHibernate.Caches.SysCache.SysCacheProvider, NHibernate.Caches.SysCache")
+            .SetProperty(Environment.ConnectionDriver, typeof (SQLite20Driver).AssemblyQualifiedName)
+            .SetProperty(Environment.ConnectionProvider,
+                         "NHibernate.Connection.DriverConnectionProvider")
+            .SetProperty(Environment.Isolation, "ReadCommitted")
+            .SetProperty(Environment.ConnectionString, "Data Source=:memory:;Version=3;New=True;")
+            .SetProperty(Environment.ShowSql, "True")
+            .SetProperty(Environment.Dialect, typeof (SQLiteDialect).AssemblyQualifiedName)
+            .AddAssembly(Assembly.GetAssembly(typeof(YourDomainObject)));
 
-        _sessionFactory = _configuration.BuildSessionFactory();
-        Session = _sessionFactory.OpenSession();
-        var schemaExport = new SchemaExport(_configuration);
-        schemaExport.Execute(false, true, false, Session.Connection, null);
-      }
+    _sessionFactory = _configuration.BuildSessionFactory();
+    Session = _sessionFactory.OpenSession();
+    var schemaExport = new SchemaExport(_configuration);
+    schemaExport.Execute(false, true, false, Session.Connection, null);
+  }
 
-      public void Dispose()
-      {
-        Session.Dispose();
-      }
-    }
-
+  public void Dispose()
+  {
+    Session.Dispose();
+  }
+}
+{% endhighlight %}
 
 Support for Schemas
 ---
@@ -92,15 +93,17 @@ than the *dbo* schema. A simple fix to this is to replace all periods with
 underscores prior to creating your session factory. This gives the desired
 behavior without requiring any modification to your mapping files. 
 
-    if (_configuration == null) {
-      _configuration = new Configuration()
-      //Configuation...
-      foreach (PersistentClass classMapping in _configuration.ClassMappings)
-      {
-        if (classMapping.Table.Name.Contains("."))
-          classMapping.Table.Name = classMapping.Table.Name.Replace(".", "_");
-      }
-    }
+{% highlight csharp %}
+if (_configuration == null) {
+  _configuration = new Configuration()
+  //Configuation...
+  foreach (PersistentClass classMapping in _configuration.ClassMappings)
+  {
+    if (classMapping.Table.Name.Contains("."))
+      classMapping.Table.Name = classMapping.Table.Name.Replace(".", "_");
+  }
+}
+{% endhighlight %}
 
 Working with AutoMockContainer
 ---
@@ -110,7 +113,9 @@ register the Session object into the container to have it provided instead of a
 mocked session. It's as simple as adding the following after creating your
 session object.
 
-    MockContainer.Register(Session); 
+{% highlight csharp %}
+MockContainer.Register(Session);
+{% endhighlight %}
 
 Testing with NHProf
 ---
@@ -120,17 +125,19 @@ database interaction can be monitored using that as well. Add an
 AssemblyInitialize (or your testing framework's variant) to your
 InMemoryDatabaseTest class and all interactions will be profiled.
 
-    [AssemblyInitialize]
-    public static void AssemblyInit(TestContext testContext)
-    {
-      NHibernateProfiler.Initialize(); 
-    } 
+{% highlight csharp %}
+[AssemblyInitialize]
+public static void AssemblyInit(TestContext testContext)
+{
+  NHibernateProfiler.Initialize();
+}
+{% endhighlight %}
 
 Having trustworthy results is essential in any test driven development.  Using
 SQLite for testing can help testing scenarios that have consistent results
 each time.
 
-[sqlite]:http://www.sqlite.org/  
+[sqlite]:http://www.sqlite.org/
 [moqcontrib]:http://code.google.com/p/moq-contrib/ 
 [sqlitemanaged]:http://sqlite.phxsoftware.com/
 [nhforge]:http://nhforge.org/

@@ -17,7 +17,9 @@ use pure functions, meaning it's functions don't have side-effects. No objects
 are modified, no global state changed. Whenever the same input goes into a
 function, the same result will come out every time.
 
-    add x y = x + y
+{% highlight haskell %}
+add x y = x + y
+{% endhighlight %}
 
 Take the `add` function for example. Whenever you give it 2 and 3 as arguments,
 it will always return 5.
@@ -25,7 +27,9 @@ it will always return 5.
 I know, what you're thinking, "I can do that in language X already!" And you're
 right, you can. However, this is just a simple example. Try this:
 
-    prepend x ys = x : ys
+{% highlight haskell %}
+prepend x ys = x : ys
+{% endhighlight %}
 
 The `prepend` method will place an item *x* on the front of a list *ys*. So for
 example if you called `prepend 5 [3,2,1]` then `[5,3,2,1]` would be returned.
@@ -39,10 +43,12 @@ Haskell is lazy, in a good way. When performing list operations, it will wait
 until the moment it needs to evaluate something before actually doing it. Say
 for example you wanted to calculate the first 5 odd numbers:
 
-    odds = [1,3..]
-    take 5 odds
+{% highlight haskell %}
+odds = [1,3..]
+take 5 odds
 
-    --OUTPUT: [1,3,5,7,9]
+--OUTPUT: [1,3,5,7,9]
+{% endhighlight %}
 
 The expression `[1,3..]` is a list starting at 1, incrementing by 2, that
 continues on to infinity (assuming no memory/time/processor restrictions). `take
@@ -52,9 +58,11 @@ continues on to infinity (assuming no memory/time/processor restrictions). `take
 For a slightly more complex example, consider getting the first 10  odd numbers
 that are not a multiple of 5.
 
-    oddsNotDivisibleBy5 = [x | x <- [1,3..], x `mod` 5 /= 0]
-    take 10 oddsNotDivisibleBy5
-    --OUTPUT: [1,3,7,9,11,13,17,19,21,23]
+{% highlight haskell %}
+oddsNotDivisibleBy5 = [x | x <- [1,3..], x `mod` 5 /= 0]
+take 10 oddsNotDivisibleBy5
+--OUTPUT: [1,3,7,9,11,13,17,19,21,23]
+{% endhighlight %}
 
 `oddsNotDivisibleBy5` is a *list comprehension*. It basically says, "give me *x*
 where *x* is each odd number from 1 onward and meets the criteria of having a
